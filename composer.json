@@ -1,0 +1,11 @@
+{
+    "name": "dgaitan/kinja-framework",
+    "description": "A Basic Framework to write better WP Plugins.",
+    "autoload": {
+        "psr-4": {
+            "Kinja\\Framework\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
