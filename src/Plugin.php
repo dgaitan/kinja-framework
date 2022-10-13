@@ -9,7 +9,6 @@ namespace Kinja\Framework;
 
 use Kinja\Framework\Concerns\Singletonable;
 use Kinja\Framework\Contracts\Instanciable;
-use Kinja\Framework\Features\Features;
 
 defined( 'ABSPATH' ) || exit;
 
