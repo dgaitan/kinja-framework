@@ -1,0 +1,84 @@
+<?php
+
+namespace {{ namespace }};
+
+use Kinja\Framework\Registers\PostTypeRegister;
+use Kinja\Framework\Database\Model;
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * 
+ * @method static Collection where( array $args = array() )
+ */
+class RequestLocation extends Model {
+
+    /**
+     * DoorStep Post Type Slug
+     */
+    public const POST_TYPE_SLUG = '{{ post_type_slug }}';
+
+    /**
+     * Hook Prefix used for actions and filters
+     *
+     * @var string
+     */
+    protected $hook_prefix = 'kinja_{{ post_type_slug }}';
+
+    /**
+     * Custom Data
+     *
+     * List here all the Post meta fields
+     *
+     * @var array<string, mixed>
+     */
+    protected $data = array();
+
+    /**
+     * Required fields.
+     * 
+     * Helpful for validations
+     *
+     * @var array<string>
+     */
+    protected $required_fields = array();
+
+    /**
+     * Original WP Post instance
+     *
+     * @var WP_Post
+     */
+    protected $post;
+
+    /**
+     * Field casting
+     *
+     * @var array
+     */
+    protected $casts = array();
+
+    /**
+     * Post Type Slug
+     *
+     * @return string
+     */
+    public function get_post_type_slug(): string {
+        return self::POST_TYPE_SLUG;
+    }
+
+    /**
+     * Setup Requests Post Type
+     *
+     * @return void
+     */
+    public function setup() : void {
+        // Change the register if needed
+        PostTypeRegister::load(
+            self::POST_TYPE_SLUG,
+            '{{ plural }}',
+            '{{ singular }}',
+            '{{ description }}',
+            '{{ permalink }}'
+        )->register();
+    }
+}
