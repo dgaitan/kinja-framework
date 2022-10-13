@@ -1,0 +1,21 @@
+<?php
+
+namespace {{ namespace }};
+
+use Kinja\Framework\Concerns\AsAction;
+
+defined( 'ABSPATH' ) || exit;
+
+class {{ class }} {
+
+    use AsAction;
+
+    /**
+     * Handle Action
+     *
+     * @return void
+     */
+    public function handle() {
+        // Since it is a filter, it should return a value and receive params.
+    }
+}

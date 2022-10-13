@@ -15,7 +15,8 @@ class Commands {
         return array(
             HelloCommand::class,
             MakeFeatureCommand::class,
-            MakeActionCommand::class
+            MakeActionCommand::class,
+            MakeFilterCommand::class
         );
     }
 
