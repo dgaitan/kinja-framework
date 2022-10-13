@@ -16,7 +16,8 @@ class Commands {
             HelloCommand::class,
             MakeFeatureCommand::class,
             MakeActionCommand::class,
-            MakeFilterCommand::class
+            MakeFilterCommand::class,
+            MakeModelCommand::class
         );
     }
 
@@ -26,6 +27,11 @@ class Commands {
      * @return void
      */
     public static function console(): void {
+        // Fake WP
+        if ( ! defined( 'ABSPATH' ) ) {
+            define( 'ABSPATH', __DIR__ );
+        }
+
         $application = new Application();
 
         foreach ( self::get_commands() as $command ) {

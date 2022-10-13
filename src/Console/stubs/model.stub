@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use Kinja\Framework\Registers\PostTypeRegister;
+use Kinja\Framework\Support\Registers\PostTypeRegister;
 use Kinja\Framework\Database\Model;
 
 defined( 'ABSPATH' ) || exit;
@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
  * 
  * @method static Collection where( array $args = array() )
  */
-class RequestLocation extends Model {
+class {{ class }} extends Model {
 
     /**
      * DoorStep Post Type Slug
