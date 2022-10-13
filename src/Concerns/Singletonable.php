@@ -16,7 +16,7 @@ trait Singletonable {
 		static $instance = false;
 
 		if ( ! $instance ) {
-			$instance = new self();
+			$instance = new static();
 			$instance->setup();
 		}
 

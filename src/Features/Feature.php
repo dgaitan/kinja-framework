@@ -152,7 +152,7 @@ abstract class Feature {
     public function add_filter( string $name, string $filter, int $priority = 10, int $params = 1 ) : void {
         $this->_filters[] = array(
             'name'     => $name,
-            'action'   => $filter,
+            'filter'   => $filter,
             'priority' => $priority,
             'params'   => $params
         );
@@ -176,7 +176,7 @@ abstract class Feature {
 
         if ( $this->_filters ) {
             foreach ( $this->_filters as $filter ) {
-                if ( ! method_exists( $filter['filter' ], 'run' )  ) {
+                if ( ! method_exists( $filter['filter'], 'run' )  ) {
                     continue;
                 }
 

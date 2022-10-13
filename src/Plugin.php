@@ -12,7 +12,7 @@ use Kinja\Framework\Contracts\Instanciable;
 
 defined( 'ABSPATH' ) || exit;
 
-class Plugin implements Instanciable {
+abstract class Plugin implements Instanciable {
     
     use Singletonable;
 
