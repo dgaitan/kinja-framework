@@ -8,5 +8,9 @@ class PluginTest extends KinjaTestCase {
         $plugin = PluginSample::instance();
 
         $this->assertSame( $plugin, PluginSample::instance() );
+
+        $plugin2 = PluginSample::instance();
+
+        $this->assertSame( $plugin, $plugin2 );
     }
 }
