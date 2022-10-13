@@ -58,7 +58,7 @@ class MakeFeatureCommand extends Command
             define( 'KINJA_PLUGIN_NAMESPACE', 'Kinja\Plugin' );
         }
 
-        return sprintf( '%s\Features\%s\%s', KINJA_PLUGIN_NAMESPACE, $name, $name );
+        return sprintf( '%s\Features\%s', KINJA_PLUGIN_NAMESPACE, $name );
     }
 
     /**
