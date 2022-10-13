@@ -68,11 +68,11 @@ class MakeFeatureCommand extends Command
      * @return string
      */
     public function get_file( string $name ) : string {
-        if ( ! defined( 'KINJA_PLUGIN_PATH' ) ) {
-            define( 'KINJA_PLUGIN_PATH', __DIR__ . '/Fixtures' );
+        if ( ! defined( 'KINJA_APP_PATH' ) ) {
+            define( 'KINJA_APP_PATH', __DIR__ . '/Fixtures' );
         }
 
-        $file = sprintf( '%s/Features/%s/%s', KINJA_PLUGIN_PATH, $name, $name );
+        $file = sprintf( '%s/Features/%s/%s', KINJA_APP_PATH, $name, $name );
 
         return $file . '.php';
     }
@@ -84,11 +84,11 @@ class MakeFeatureCommand extends Command
      * @return void
      */
     protected function maybe_create_dir( string $name ) {
-        if ( ! defined( 'KINJA_PLUGIN_PATH' ) ) {
-            define( 'KINJA_PLUGIN_PATH', __DIR__ . '/Fixtures' );
+        if ( ! defined( 'KINJA_APP_PATH' ) ) {
+            define( 'KINJA_APP_PATH', __DIR__ . '/Fixtures' );
         }
 
-        $dir = sprintf( '%s/Features/%s/', KINJA_PLUGIN_PATH, $name );
+        $dir = sprintf( '%s/Features/%s/', KINJA_APP_PATH, $name );
         var_dump($dir);
 
         if ( ! is_dir( $dir ) ) {
