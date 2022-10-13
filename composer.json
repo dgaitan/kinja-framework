@@ -9,6 +9,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
+        "php": "^7.4",
         "nesbot/carbon": "2.62.1",
         "tightenco/collect": "8"
     },
@@ -18,7 +19,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Kinja\\Tests\\": "tests/"
         }
     }
 }
