@@ -14,7 +14,8 @@ class Commands {
     public static function get_commands() : array {
         return array(
             HelloCommand::class,
-            MakeFeatureCommand::class
+            MakeFeatureCommand::class,
+            MakeActionCommand::class
         );
     }
 
@@ -27,7 +28,7 @@ class Commands {
         $application = new Application();
 
         foreach ( self::get_commands() as $command ) {
-            $application->add(new $command());
+            $application->add( new $command() );
         }
 
         $application->run();

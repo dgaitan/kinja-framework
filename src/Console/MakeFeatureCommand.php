@@ -89,7 +89,6 @@ class MakeFeatureCommand extends Command
         }
 
         $dir = sprintf( '%s/Features/%s/', KINJA_APP_PATH, $name );
-        var_dump($dir);
 
         if ( ! is_dir( $dir ) ) {
             mkdir( $dir );

@@ -1,0 +1,22 @@
+<?php
+
+namespace {{ namespace }};
+
+use Kinja\Framework\Concerns\AsAction;
+
+defined( 'ABSPATH' ) || exit;
+
+class {{ class }} {
+
+    use AsAction;
+
+    /**
+     * Handle Action
+     *
+     * @return void
+     */
+    public function handle() {
+        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) return;
+    }
+}
