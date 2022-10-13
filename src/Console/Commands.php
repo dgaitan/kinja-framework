@@ -13,7 +13,8 @@ class Commands {
      */
     public static function get_commands() : array {
         return array(
-            HelloCommand::class
+            HelloCommand::class,
+            MakeFeatureCommand::class
         );
     }
 

@@ -131,7 +131,7 @@ abstract class Feature {
      * @param integer $params
      * @return void
      */
-    public function add_action( string $name, string $action, int $priority = 10, int $params = 1, ) : void {
+    public function add_action( string $name, string $action, int $priority = 10, int $params = 1 ) : void {
         $this->_actions[] = array(
             'name'     => $name,
             'action'   => $action,
