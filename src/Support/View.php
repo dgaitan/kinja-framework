@@ -26,7 +26,7 @@ class View {
      * @package alligator
      */
     public function __construct( string $template ) {
-        $this->template_path = KINJA_PLUGIN_PLUGIN_PATH . '/templates/';
+        $this->template_path = KINJA_PATH . '/templates/';
         $this->template      = $template;
     }
 

@@ -6,6 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Kinja\Framework\Concerns\Component;
 use Kinja\Framework\Exceptions\NotImplementedException;
+use Throwable;
 
 abstract class Ajaxable extends Component {
     /**
@@ -30,24 +31,36 @@ abstract class Ajaxable extends Component {
      *
      * @var string
      */
-    protected $actions_prefix = 'doorstep';
+    protected $actions_prefix = 'kinja';
+
+    /**
+     * WP Nonce Name
+     *
+     * @var string
+     */
+    protected $nonce_action_name = '_wpnonce';
+
+    /**
+     * WP Nonce Query Arg
+     *
+     * @var string
+     */
+    protected $nonce_query_arg = '_wpnonce';
 
     /**
      * INitialize the Ajax instance
      */
-    public function __construct() {
-        $this->define_actions();
-    }
+    public function __construct() {}
 
     /**
      * Define the ajax actions
      *
      * @return void
      */
-    public function define_actions() : void {
+    public function endpoints() : void {
         throw new NotImplementedException(
             sprintf(
-                'define_actions method in %s needs to be implemented',
+                'endpoints method in %s needs to be implemented',
                 static::class
             )
         );
@@ -95,7 +108,14 @@ abstract class Ajaxable extends Component {
         $action   = sanitize_text_field( $_REQUEST['action'] );
         $callback = $this->get_real_action_name( $action );
 
-        return $this->{$callback}();
+        try {
+            // Execute the real callback
+            return $this->{$callback}();
+        } catch ( Throwable $e ) {
+            return wp_send_json_error( array(
+                'message' => $e->getMessage(),
+            ) );
+        }
     }
 
     /**
@@ -152,11 +172,28 @@ abstract class Ajaxable extends Component {
     }
 
     /**
+     * Check ajax referer helper
+     *
+     * @param string|null $action
+     * @param string|null $query_arg
+     * @return void
+     */
+    public function check_ajax_referer( $action = null, $query_arg = null ) : void {
+        $action    = is_null( $action ) ? $this->nonce_action_name : $action;
+        $query_arg = is_null( $query_arg ) ? $this->nonce_query_arg : $query_arg;
+
+        if ( check_admin_referer( $action, $query_arg, false ) ) {
+            throw new Exception( 'Invalid or Expired Request' );
+        }
+    }
+
+    /**
      * Initialize Ajax
      *
      * @return void
      */
     public function setup() : void {
+        $this->endpoints();
         $this->register_actions();
     }
 }
