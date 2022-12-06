@@ -30,10 +30,10 @@ abstract class JsonResource {
      * Iinitalize
      *
      * @param mixed $resource
-     * @return static
+     * @return self
      */
-    public static function make( $resource ) : static {
-        return new static( $resource );
+    public static function make( $resource ) : self {
+        return new self( $resource );
     }
 
     /**
