@@ -33,7 +33,7 @@ abstract class JsonResource {
      * @return self
      */
     public static function make( $resource ) : self {
-        return new self( $resource );
+        return new static( $resource );
     }
 
     /**
