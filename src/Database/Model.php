@@ -39,6 +39,26 @@ abstract class Model implements Instanciable {
     }
 
     /**
+     * Convert data to an array
+     *
+     * @return array
+     */
+    public function to_array() : array {
+        return array_merge(
+            array_map( function ( $item ) {
+                return array(
+                    $item => $this->get_prop( $item ),
+                );
+            }, $this->wp_fields ),
+            array_map( function ( $item ) {
+                return array(
+                    $item => $this->get_prop( $item ),
+                );
+            }, $this->data ),
+        );
+    }
+
+    /**
      * Return Post Type Slug
      *
      * @return string
