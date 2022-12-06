@@ -8,6 +8,18 @@ use Tightenco\Collect\Support\Collection;
 defined( 'ABSPATH' ) || exit;
 
 trait InteractsWithWP {
+
+    /**
+     * Only Fields
+     * 
+     * It helps to retrieve only an
+     * specific list of fields if
+     * necessary
+     *
+     * @var array
+     */
+    protected $only_fields = array();
+
     /**
      * Save the instance
      *
@@ -54,16 +66,21 @@ trait InteractsWithWP {
      * Execute a WP_Query
      *
      * @param array $args
+     * @param array $only_fields
      * @return Collection
      */
-    public static function where( array $args = array() ) {
+    public static function where(
+        array $args = array(), 
+        array $only_fields = array() 
+    ) {
         $instance   = new static;
         $query_args = $instance->parse_arguments( $args );
         $posts      = get_posts( $query_args );
 
         // We're going to convert the posts to a collection
-        $posts = Collection::make( $posts )->map( function ( $post ) {
+        $posts = Collection::make( $posts )->map( function ( $post ) use ( $only_fields ) {
             $post = new static( (array) $post );
+            $post->set_only_fields( $only_fields );
             $post->refresh();
 
             return $post;
@@ -145,7 +162,8 @@ trait InteractsWithWP {
      * @return integer
      */
     protected function perform_save() : int {
-        $args = array(
+        $meta_fields = array(); // or custom fields
+        $args        = array(
             'post_type' => $this->get_post_type_slug()
         );
 
@@ -159,13 +177,14 @@ trait InteractsWithWP {
         }
         
         if ( $this->data ) {
-            $meta_fields = array();
 
             foreach ( $this->data as $key => $value ) {
                 $meta_fields[ $key ] = $this->value_to_store( $key, $value );
             }
 
-            $args['meta_input'] = $meta_fields;
+            if ( ! $this->using_acf() ) {
+                $args['meta_input'] = $meta_fields;
+            }
         }
 
         $post_id = wp_insert_post( $args );
@@ -174,6 +193,12 @@ trait InteractsWithWP {
         // It means that the action is creating.
         if ( $args['ID'] === 0 ) {
             $this->set_prop( 'ID', $post_id );
+        }
+
+        if ( $this->using_acf() ) {
+            foreach ( $meta_fields as $key => $value ) {
+                update_field( $key, $value, $post_id );
+            }
         }
 
         return $post_id;
@@ -193,6 +218,25 @@ trait InteractsWithWP {
      */
     protected function after_create() : void {
 
+    }
+
+    /**
+     * Is using advanced custom fields?
+     *
+     * @return boolean
+     */
+    protected function using_acf() : bool {
+        return false;
+    }
+
+    /**
+     * Set Only Fields needed
+     *
+     * @param array $only_fields
+     * @return void
+     */
+    public function set_only_fields( array $only_fields = array() ) : void {
+        $this->only_fields = $only_fields;
     }
 
     /**
@@ -223,11 +267,31 @@ trait InteractsWithWP {
         // Now let us take a look on post meta fields
         if ( $this->data ) {
             foreach ( $this->data as $key => $value ) {
-                $this->data[ $key ] = get_post_meta( $this->ID, $key, true );
+                if ( ! $this->should_retrieve_data( $key ) ) {
+                    continue;
+                }
+                
+                $this->data[ $key ] = $this->using_acf()
+                    ? get_field( $key, $this->ID )
+                    : get_post_meta( $this->ID, $key, true );
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Should Retrieve data of tis fields?
+     *
+     * @param string $field
+     * @return boolean
+     */
+    protected function should_retrieve_data( string $field ) {
+        if ( count( $this->only_fields ) === 0 ) {
+            return true;
+        }
+
+        return in_array( $field, $this->only_fields );
     }
 
     /**
@@ -242,7 +306,9 @@ trait InteractsWithWP {
             return false;
         }
 
-        update_post_meta( $this->ID, $prop, $value );
+        $this->using_acf()
+            ? update_field( $prop, $value, $this->ID )
+            : update_post_meta( $this->ID, $prop, $value );
 
         return $this;
     }
