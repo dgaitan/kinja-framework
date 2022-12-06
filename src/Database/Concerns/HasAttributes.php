@@ -3,10 +3,10 @@
 namespace Kinja\Framework\Database\Concerns;
 
 use Exception;
-use Kinja\Framework\Casts\ContentCast;
-use Kinja\Framework\Casts\DateCast;
-use Kinja\Framework\Casts\IntegerCast;
-use Kinja\Framework\Casts\StringCast;
+use Kinja\Framework\Database\Casts\ContentCast;
+use Kinja\Framework\Database\Casts\DateCast;
+use Kinja\Framework\Database\Casts\IntegerCast;
+use Kinja\Framework\Database\Casts\StringCast;
 
 defined( 'ABSPATH' ) || exit;
 
